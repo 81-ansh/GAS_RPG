@@ -4,9 +4,18 @@
 #include "EnhancedInputComponent.h"
 #include "Player/MainPlayerController.h"
 
+#include "Interaction/EnemyInterface.h"
+
 AMainPlayerController::AMainPlayerController()
 {
 	bReplicates = true;
+}
+
+void AMainPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();	
 }
 
 void AMainPlayerController::BeginPlay()
@@ -48,5 +57,63 @@ void AMainPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void AMainPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if (!CursorHit.bBlockingHit) return;
+
+	LastActor = ThisActor;
+	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	/**
+	 * Line trace for cursor. There are several scenarios:
+	 *  A. LastActor is null && ThisActor is null
+	 *		- Do nothing
+	 *	B. LastActor is null && ThisActor is valid
+	 *		- Highlight ThisActor
+	 *	C. LastActor is valid && ThisActor is null
+	 *		- Unhighlight LastActor
+	 *	D. Both actors are valid, but LastActor != ThisActor
+	 *		- Unhighlight LastActor and Highlight ThisActor
+	 *	E. Both actors are valid, and are same actor
+	 *		- Do nothing
+	 */
+
+	if (LastActor == nullptr)
+	{
+		if (ThisActor != nullptr)
+		{
+			//Case B
+			ThisActor->HighlightActor();
+		}
+		else
+		{
+			//Case A - Both are null, do nothing
+		}
+	}
+	else //LastActor is valid
+	{
+		if (ThisActor == nullptr)
+		{
+			//Case C
+			LastActor->UnHighlightActor();
+		}
+		else //both actors are valid
+		{
+			if (LastActor != ThisActor)
+			{
+				//Case D
+				LastActor->UnHighlightActor();
+				ThisActor->HighlightActor();
+			}
+			else
+			{
+				//Case E - do nothing
+			}
+		}
 	}
 }

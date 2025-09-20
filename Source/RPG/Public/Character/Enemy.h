@@ -16,5 +16,8 @@ class RPG_API AEnemy : public ACharacterBase, public IEnemyInterface
 	GENERATED_BODY()
 public:
 	virtual void HighlightActor() override;
-	virtual void UnHighlightActor() override;	
+	virtual void UnHighlightActor() override;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bHighlighted = false;
 };
