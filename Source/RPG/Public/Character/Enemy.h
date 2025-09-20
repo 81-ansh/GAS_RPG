@@ -4,14 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Character/CharacterBase.h"
+#include "Interaction/EnemyInterface.h"
 #include "Enemy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class RPG_API AEnemy : public ACharacterBase
+class RPG_API AEnemy : public ACharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
-	
+public:
+	virtual void HighlightActor() override;
+	virtual void UnHighlightActor() override;	
 };
