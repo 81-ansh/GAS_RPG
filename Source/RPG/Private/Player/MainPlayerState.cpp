@@ -3,7 +3,19 @@
 
 #include "Player/MainPlayerState.h"
 
+#include "AbilitySystem/RPGAbilitySystemComponent.h"
+#include "AbilitySystem/RPGAttributeSet.h"
+
 AMainPlayerState::AMainPlayerState()
 {
-	NetUpdateFrequency = 100.f;
+	AbilitySystemComponent = CreateDefaultSubobject<URPGAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);
+
+	AttributeSet = CreateDefaultSubobject<URPGAttributeSet>("AttributeSet");
+	SetNetUpdateFrequency(100.f);
+}
+
+UAbilitySystemComponent* AMainPlayerState::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
