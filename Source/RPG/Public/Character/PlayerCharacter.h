@@ -14,6 +14,12 @@ class RPG_API APlayerCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
 public:
-	APlayerCharacter();	
+	APlayerCharacter();
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+
+private:
+	void InitAbilityActorInfo();
+	
 	
 };

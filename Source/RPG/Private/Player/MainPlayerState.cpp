@@ -10,6 +10,7 @@ AMainPlayerState::AMainPlayerState()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<URPGAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSet = CreateDefaultSubobject<URPGAttributeSet>("AttributeSet");
 	SetNetUpdateFrequency(100.f);

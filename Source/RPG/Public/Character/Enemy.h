@@ -16,7 +16,12 @@ class RPG_API AEnemy : public ACharacterBase, public IEnemyInterface
 	GENERATED_BODY()
 public:
 	AEnemy();
+	//Enemy Interface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	//end Enemy Interface
+
+protected:
+	virtual void BeginPlay() override;	
 
 };

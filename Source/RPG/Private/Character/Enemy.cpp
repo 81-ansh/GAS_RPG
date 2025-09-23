@@ -13,7 +13,8 @@ AEnemy::AEnemy()
 
 	AbilitySystemComponent = CreateDefaultSubobject<URPGAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
-
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	
 	AttributeSet = CreateDefaultSubobject<URPGAttributeSet>("AttributeSet");
 }
 
@@ -31,4 +32,11 @@ void AEnemy::UnHighlightActor()
 	GetMesh()->SetRenderCustomDepth(false);
 
 	Weapon->SetRenderCustomDepth(false);
+}
+
+void AEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
