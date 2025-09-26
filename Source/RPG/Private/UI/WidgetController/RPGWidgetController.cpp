@@ -3,3 +3,6 @@
 
 #include "UI/WidgetController/RPGWidgetController.h"
 
+void URPGWidgetController::SetWidgetControllerParams(const FWidgetControllerParams& WCParams)
+{
+}
