@@ -1,18 +1,19 @@
 Binaries
-Saved
-Intermediate
-Built
 DerivedDataCache
+Intermediate
+Saved
 
 RPG.uproject.DotSettings.user
 
 .vscode
 .vs
-*.VC.db
-*.opensdf
-*.opendb
-*.sdf
+.idea
+.vsconfig
+
 *.sln
 *.suo
-*.xcodeproj
-*.xcworkspace
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
