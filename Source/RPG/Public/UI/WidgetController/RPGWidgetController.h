@@ -38,7 +38,7 @@ class RPG_API URPGWidgetController : public UObject
 	GENERATED_BODY()
 
 public:
-
+	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
 
 protected:

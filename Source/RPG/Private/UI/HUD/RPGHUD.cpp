@@ -3,11 +3,32 @@
 
 #include "UI/HUD/RPGHUD.h"
 #include "UI/Widget/RPGUserWidget.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 
-void ARPGHUD::BeginPlay()
+UOverlayWidgetController* ARPGHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
-	Super::BeginPlay();
+	if (OverlayWidgetClass == nullptr)
+	{
+		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
+		OverlayWidgetController->SetWidgetControllerParams(WCParams);
 
+		return OverlayWidgetController;
+	}
+	return OverlayWidgetController;
+}
+
+void ARPGHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
+{
+	checkf(OverlayWidgetClass, TEXT("Overlay Widget Class uninitialized, please fill out BP_RPGHUD"));
+	checkf(OverlayWidgetControllerClass, TEXT("Overlay Widget Controller Class uninitialized, please fill out BP_RPGHUD"));
+	
 	URPGUserWidget* Widget = CreateWidget<URPGUserWidget>(GetWorld(), OverlayWidgetClass);
+	OverlayWidget = Cast<URPGUserWidget>(Widget);
+
+	const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
+
+	OverlayWidget->SetWidgetController(WidgetController);
+	
 	Widget->AddToViewport();
 }
