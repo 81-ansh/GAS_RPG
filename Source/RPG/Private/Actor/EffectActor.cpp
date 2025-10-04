@@ -27,7 +27,8 @@ void AEffectActor::OnOverlap(UPrimitiveComponent* OverLappedComponent, AActor* O
 		const URPGAttributeSet* RPGAttributeSet = Cast<URPGAttributeSet>(ASCInterface->GetAbilitySystemComponent()->GetAttributeSet(URPGAttributeSet::StaticClass()));
 
 		URPGAttributeSet* MutableRPGAttributeSet = const_cast<URPGAttributeSet*>(RPGAttributeSet);
-		MutableRPGAttributeSet->SetHealth(RPGAttributeSet->GetHealth() + 25.f);
+		MutableRPGAttributeSet->SetHealth(RPGAttributeSet->GetHealth() - 25.f);
+		MutableRPGAttributeSet->SetMana(RPGAttributeSet->GetMana() - 25.f);
 		Destroy();
 	}
 }
