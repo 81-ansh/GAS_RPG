@@ -29,6 +29,6 @@ void ARPGHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyste
 	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
 
 	OverlayWidget->SetWidgetController(WidgetController);
-	
+	WidgetController->BroadcastInitialValues();
 	Widget->AddToViewport();
 }
