@@ -30,3 +30,11 @@ void AEffectActor::ApplyEffectsToTarget(AActor* TargetActor, TSubclassOf<UGamepl
 	
 }
 
+void AEffectActor::OnOverlap(AActor* TargetActor)
+{
+}
+
+void AEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+}
+
