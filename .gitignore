@@ -2,8 +2,7 @@ Binaries
 DerivedDataCache
 Intermediate
 Saved
-
-RPG.uproject.DotSettings.user
+Build
 
 .vscode
 .vs
@@ -17,3 +16,4 @@ RPG.uproject.DotSettings.user
 *.VC.db
 *.VC.opendb
 
+*.DotSettings.user
