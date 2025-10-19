@@ -54,5 +54,5 @@ void APlayerCharacter::InitAbilityActorInfo()
 			RPGHUD->InitOverlay(MainPlayerController, MainPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 }

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AbilitySystem/RPGAttributeSet.h"
+#include "AbilitySystem/RPGAttributeSet.h" 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/Character.h"
@@ -9,10 +9,8 @@
 
 URPGAttributeSet::URPGAttributeSet()
 {
-	InitHealth(50.f);
-	InitMaxHealth(100.f);
-	InitMana(25.f);
-	InitMaxMana(50.f);
+	InitHealth(10.f);
+	InitMana(10.f);
 }
 
 void URPGAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
