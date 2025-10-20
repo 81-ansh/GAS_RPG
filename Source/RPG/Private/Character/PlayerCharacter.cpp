@@ -42,6 +42,7 @@ int32 APlayerCharacter::GetPlayerLevel()
 {
 	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
 	check(MainPlayerState);
+	return MainPlayerState->GetPlayerLevel();
 }
 
 void APlayerCharacter::InitAbilityActorInfo()
