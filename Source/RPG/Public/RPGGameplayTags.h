@@ -16,6 +16,8 @@ struct FRPGGameplayTags
 public:
 	static const FRPGGameplayTags& Get() {return GameplayTags;}
 	static void InitializeNativeGameplayTags();
+
+	FGameplayTag Attributes_Secondary_Armour;
 	
 protected:
 	

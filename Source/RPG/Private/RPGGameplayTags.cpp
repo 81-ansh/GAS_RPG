@@ -9,5 +9,6 @@ FRPGGameplayTags FRPGGameplayTags::GameplayTags;
 
 void FRPGGameplayTags::InitializeNativeGameplayTags()
 {
-	UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Secondary.Armour"), FString("Reduces damage taken, improves block chance"));
+	GameplayTags.Attributes_Secondary_Armour = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Secondary.Armour"), FString("Reduces damage taken, improves block chance"));
+
 }
