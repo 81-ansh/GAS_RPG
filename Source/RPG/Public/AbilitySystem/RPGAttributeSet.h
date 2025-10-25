@@ -85,13 +85,13 @@ public:
 	 *  Secondary Attributes
 	 */
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armour, Category = "Secondary Attributes")
-	FGameplayAttributeData Armour;
-	ATTRIBUTE_ACCESSORS(URPGAttributeSet, Armour)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Secondary Attributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(URPGAttributeSet, Armor)
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ArmourPenetration, Category = "Secondary Attributes")
-	FGameplayAttributeData ArmourPenetration;
-	ATTRIBUTE_ACCESSORS(URPGAttributeSet, ArmourPenetration)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ArmorPenetration, Category = "Secondary Attributes")
+	FGameplayAttributeData ArmorPenetration;
+	ATTRIBUTE_ACCESSORS(URPGAttributeSet, ArmorPenetration)
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_BlockChance, Category = "Secondary Attributes")
 	FGameplayAttributeData BlockChance;
@@ -158,10 +158,10 @@ public:
 	 */
 
 	UFUNCTION()
-	void OnRep_Armour(const FGameplayAttributeData& OldArmour) const;
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
 
 	UFUNCTION()
-	void OnRep_ArmourPenetration(const FGameplayAttributeData& OldArmourPenetration) const;
+	void OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const;
 
 	UFUNCTION()
 	void OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const;
