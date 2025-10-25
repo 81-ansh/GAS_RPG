@@ -3,12 +3,22 @@
 
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 
+#include "RPGGameplayTags.h"
+#include "AbilitySystem/RPGAttributeSet.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
+
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
-	Super::BroadcastInitialValues();
+	URPGAttributeSet* AS = CastChecked<URPGAttributeSet>(AttributeSet);
+
+	check(AttributeInfo);
+
+	FRPGAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(FRPGGameplayTags::Get().Attributes_Primary_Strength);
+	Info.AttributeValue = AS-> GetStrength();
+	AttributeInfoDelegate.Broadcast(Info);
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	Super::BindCallbacksToDependencies();
+	
 }
