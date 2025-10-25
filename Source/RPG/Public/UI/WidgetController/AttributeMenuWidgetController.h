@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class RPG_API UAttributeMenuWidgetController : public URPGWidgetController
 {
 	GENERATED_BODY()
