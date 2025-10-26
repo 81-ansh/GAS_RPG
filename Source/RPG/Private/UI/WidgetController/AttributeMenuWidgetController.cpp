@@ -11,11 +11,14 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
 	URPGAttributeSet* AS = CastChecked<URPGAttributeSet>(AttributeSet);
 
-	check(AttributeInfo);
+	check(AttributeInfo)
 
-	FRPGAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(FRPGGameplayTags::Get().Attributes_Primary_Strength);
-	Info.AttributeValue = AS-> GetStrength();
-	AttributeInfoDelegate.Broadcast(Info);
+	for (auto& Pair : AS->TagsToAttributes)
+	{
+		FRPGAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
+		Info.AttributeValue = Pair.Value().GetNumericValue(AS);
+		AttributeInfoDelegate.Broadcast(Info);
+	}
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
