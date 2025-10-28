@@ -13,5 +13,9 @@ UCLASS()
 class RPG_API URPGGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	FGameplayTag StartupInputTag;
 };

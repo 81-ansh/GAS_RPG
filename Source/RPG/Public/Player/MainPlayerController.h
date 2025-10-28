@@ -12,6 +12,7 @@ class UInputAction;
 struct FInputActionValue;
 class IEnemyInterface;
 class URPGInputConfig;
+class URPGAbilitySystemComponent;
 
 /**
  * 
@@ -49,4 +50,9 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<URPGInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<URPGAbilitySystemComponent> RPGAbilitySystemComponent;
+
+	URPGAbilitySystemComponent* GetASC();
 };
