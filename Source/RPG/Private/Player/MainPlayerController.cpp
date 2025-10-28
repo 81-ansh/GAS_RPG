@@ -4,7 +4,9 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Input/RPGInputComponent.h"
 
 #include "Interaction/EnemyInterface.h"
@@ -12,6 +14,7 @@
 AMainPlayerController::AMainPlayerController()
 {
 	bReplicates = true;
+	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void AMainPlayerController::PlayerTick(float DeltaTime)
@@ -126,6 +129,12 @@ void AMainPlayerController::CursorTrace()
 
 void AMainPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	if (InputTag.MatchesTagExact(FRPGGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting =ThisActor ? true : false;
+		bAutoRunning = false;
+	}
+	
 }
 
 void AMainPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -136,8 +145,39 @@ void AMainPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AMainPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if (GetASC() == nullptr) return;
-	GetASC()->AbilityInputTagHeld(InputTag);
+	if (!InputTag.MatchesTagExact(FRPGGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
+
+	if (bTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+
+		if (APawn* ControlledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+	}
+	
 }
 
 URPGAbilitySystemComponent* AMainPlayerController::GetASC()
