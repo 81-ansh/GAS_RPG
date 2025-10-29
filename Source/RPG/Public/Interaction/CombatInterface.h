@@ -24,4 +24,5 @@ class RPG_API ICombatInterface
 public:
 
 	virtual int32 GetPlayerLevel();
+	virtual FVector GetCombatSocketLocation();
 };
