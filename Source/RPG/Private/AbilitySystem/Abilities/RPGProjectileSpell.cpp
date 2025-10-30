@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/Abilities/RPGProjectileSpell.h"
-
 #include "Actor/RPGProjectile.h"
 #include "Interaction/CombatInterface.h"
 
@@ -20,9 +19,10 @@ void URPGProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	if (CombatInterface)
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+
 		FTransform SpawnTransform;
-		// TODO: Set the projectile rotation.
 		SpawnTransform.SetLocation(SocketLocation);
+		//TODO: Set the Projectile Rotation
 		
 		ARPGProjectile* Projectile = GetWorld()->SpawnActorDeferred<ARPGProjectile>(
 			ProjectileClass,
@@ -31,10 +31,9 @@ void URPGProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 			Cast<APawn>(GetOwningActorFromActorInfo()),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-		// TODO: Give projectile a gameplay effect spec for causing damage.
+		//TODO: Give the Projectile a Gameplay Effect Spec for causing Damage.
+		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-	
-	
 	
 }

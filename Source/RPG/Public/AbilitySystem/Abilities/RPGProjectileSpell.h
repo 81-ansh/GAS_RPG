@@ -7,6 +7,7 @@
 #include "RPGProjectileSpell.generated.h"
 
 class ARPGProjectile;
+
 /**
  * 
  */
