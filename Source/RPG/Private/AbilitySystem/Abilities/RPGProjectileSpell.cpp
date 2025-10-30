@@ -12,7 +12,13 @@ void URPGProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	const bool bIsServer = HasAuthority(&ActivationInfo);
+	
+	
+}
+
+void URPGProjectileSpell::SpawnProjectile()
+{
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
 
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
@@ -35,5 +41,4 @@ void URPGProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-	
 }
