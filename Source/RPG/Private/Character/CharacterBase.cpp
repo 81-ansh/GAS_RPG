@@ -4,12 +4,16 @@
 #include "Character/CharacterBase.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
