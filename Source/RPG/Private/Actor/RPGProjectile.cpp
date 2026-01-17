@@ -7,6 +7,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "RPG/RPG.h"
 
 // Sets default values
 ARPGProjectile::ARPGProjectile()
@@ -16,6 +17,7 @@ ARPGProjectile::ARPGProjectile()
 
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
 	SetRootComponent(Sphere);
+	Sphere->SetCollisionObjectType(ECC_Projectile);
 	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	Sphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
