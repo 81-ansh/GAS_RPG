@@ -2,6 +2,9 @@
 
 
 #include "Actor/RPGProjectile.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "NiagaraFunctionLibrary.h"
@@ -61,6 +64,10 @@ void ARPGProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, A
 
 	if (HasAuthority())
 	{
+		if (UAbilitySystemComponent* TargetASC =  UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		}
 		Destroy();
 	}
 	else

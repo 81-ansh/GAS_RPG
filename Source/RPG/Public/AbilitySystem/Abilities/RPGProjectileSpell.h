@@ -7,6 +7,7 @@
 #include "RPGProjectileSpell.generated.h"
 
 class ARPGProjectile;
+class UGameplayEffect;
 
 /**
  * 
@@ -25,4 +26,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ARPGProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };
