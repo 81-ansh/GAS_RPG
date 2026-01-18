@@ -2,6 +2,10 @@
 
 
 #include "AbilitySystem/RPGAbilitySystemLibrary.h"
+
+#include "AbilitySystemComponent.h"
+#include "GameplayEffectTypes.h"
+#include "Game/RPGGameModeBase.h"
 #include "Player/MainPlayerState.h"
 #include "UI/WidgetController/RPGWidgetController.h"
 #include "Kismet/GameplayStatics.h"
@@ -37,4 +41,30 @@ UAttributeMenuWidgetController* URPGAbilitySystemLibrary::GetAttributeMenuWidget
 		}
 	}
 	return nullptr;
+}
+
+void URPGAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC)
+{
+	ARPGGameModeBase* RPGGameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (RPGGameMode == nullptr) return;
+
+	AActor* AvatarActor = ASC->GetAvatarActor();
+
+	UCharacterClassInfo* CharacterClassInfo = RPGGameMode->CharacterClassInfo;
+	FCharacterClassDefaultInfo ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+
+	FGameplayEffectContextHandle PrimaryAttributesContextHandle = ASC->MakeEffectContext();
+	PrimaryAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle PrimaryAttributeSpecHandle = ASC->MakeOutgoingSpec(ClassDefaultInfo.PrimaryAttributes, Level, PrimaryAttributesContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*PrimaryAttributeSpecHandle.Data.Get());
+
+	FGameplayEffectContextHandle SecondaryAttributesContextHandle = ASC->MakeEffectContext();
+	SecondaryAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle SecondaryAttributeSpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->SecondaryAttributes, Level, SecondaryAttributesContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*SecondaryAttributeSpecHandle.Data.Get());
+
+	FGameplayEffectContextHandle VitalAttributesContextHandle = ASC->MakeEffectContext();
+	VitalAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle ViralAttributeSpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->VitalAttributes, Level, VitalAttributesContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*ViralAttributeSpecHandle.Data.Get());
 }
