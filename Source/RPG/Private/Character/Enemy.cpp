@@ -2,10 +2,11 @@
 
 
 #include "Character/Enemy.h"
-
+#include "Components/WidgetComponent.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "AbilitySystem/RPGAttributeSet.h"
 #include "RPG/RPG.h"
+#include "UI/Widget/RPGUserWidget.h"
 
 AEnemy::AEnemy()
 {
@@ -16,6 +17,9 @@ AEnemy::AEnemy()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
 	AttributeSet = CreateDefaultSubobject<URPGAttributeSet>("AttributeSet");
+
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
+	HealthBar->SetupAttachment(GetRootComponent());
 }
 
 void AEnemy::HighlightActor()
@@ -44,6 +48,30 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	InitAbilityActorInfo();
+
+	if (URPGUserWidget* RPGUserWidget = Cast<URPGUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		RPGUserWidget->SetWidgetController(this);
+	}
+	
+	if (const URPGAttributeSet* RPGAS = Cast<URPGAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(RPGAS->GetHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(RPGAS->GetMaxHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnMaxHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+
+		OnHealthChanged.Broadcast(RPGAS->GetHealth());
+		OnMaxHealthChanged.Broadcast(RPGAS->GetMaxHealth());
+	}
 }
 
 void AEnemy::InitAbilityActorInfo()

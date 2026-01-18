@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "Character/CharacterBase.h"
 #include "Interaction/EnemyInterface.h"
 #include "Enemy.generated.h"
 
+class UWidgetComponent;
 /**
  * 
  */
@@ -28,6 +30,12 @@ public:
 	virtual int32 GetPlayerLevel() override;
 	/* End Combat Interface*/
 
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+
 protected:
 	
 	virtual void BeginPlay() override;	
@@ -35,5 +43,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
 };
