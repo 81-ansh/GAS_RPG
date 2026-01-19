@@ -75,7 +75,7 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	FString("Maximum amount of mana obtainable"));
 
 	/*
-	 * Secondary Attribute Tags
+	 * Control Tags
 	 */
 	
 	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -101,4 +101,8 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.InputTag_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("InputTag.4"), 
 	FString("Input Tag for 4 key"));
+
+	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Damage"), 
+	FString("Damage"));
 }
