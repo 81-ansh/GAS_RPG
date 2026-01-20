@@ -8,6 +8,8 @@
 #include "AbilitySystem/RPGAttributeSet.h"
 #include "RPG/RPG.h"
 #include "UI/Widget/RPGUserWidget.h"
+#include "RPGGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AEnemy::AEnemy()
 {
@@ -48,6 +50,7 @@ int32 AEnemy::GetPlayerLevel()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
 
 	if (URPGUserWidget* RPGUserWidget = Cast<URPGUserWidget>(HealthBar->GetUserWidgetObject()))
@@ -70,9 +73,19 @@ void AEnemy::BeginPlay()
 			}
 		);
 
+		AbilitySystemComponent->RegisterGameplayTagEvent(FRPGGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this,
+			&AEnemy::HitReactTagChanged
+		);
 		OnHealthChanged.Broadcast(RPGAS->GetHealth());
 		OnMaxHealthChanged.Broadcast(RPGAS->GetMaxHealth());
 	}
+}
+
+void AEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 }
 
 void AEnemy::InitAbilityActorInfo()
