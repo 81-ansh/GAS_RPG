@@ -52,6 +52,7 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
+	URPGAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 
 	if (URPGUserWidget* RPGUserWidget = Cast<URPGUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
