@@ -47,6 +47,12 @@ int32 AEnemy::GetPlayerLevel()
 	
 }
 
+void AEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
