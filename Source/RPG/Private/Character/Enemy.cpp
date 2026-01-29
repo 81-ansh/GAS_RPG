@@ -9,6 +9,9 @@
 #include "RPG/RPG.h"
 #include "UI/Widget/RPGUserWidget.h"
 #include "RPGGameplayTags.h"
+#include "AI/RPGAIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AEnemy::AEnemy()
@@ -23,6 +26,17 @@ AEnemy::AEnemy()
 
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+}
+
+void AEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	if (!HasAuthority()) return;
+	RPGAIController = Cast<ARPGAIController>(NewController);
+	
+	RPGAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	RPGAIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AEnemy::HighlightActor()
