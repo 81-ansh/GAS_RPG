@@ -80,7 +80,7 @@ void AEnemy::BeginPlay()
 	InitAbilityActorInfo();
 	if (HasAuthority())
 	{
-		URPGAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+		URPGAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);
 	}
 	
 	if (URPGUserWidget* RPGUserWidget = Cast<URPGUserWidget>(HealthBar->GetUserWidgetObject()))

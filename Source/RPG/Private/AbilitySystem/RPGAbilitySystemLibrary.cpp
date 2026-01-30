@@ -2,11 +2,12 @@
 
 
 #include "AbilitySystem/RPGAbilitySystemLibrary.h"
-
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectTypes.h"
 #include "RPGAbilityTypes.h"
 #include "Game/RPGGameModeBase.h"
+#include "Interaction/CombatInterface.h"
 #include "Player/MainPlayerState.h"
 #include "UI/WidgetController/RPGWidgetController.h"
 #include "Kismet/GameplayStatics.h"
@@ -67,13 +68,23 @@ void URPGAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* WorldC
 	ASC->ApplyGameplayEffectSpecToSelf(*ViralAttributeSpecHandle.Data.Get());
 }
 
-void URPGAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+void URPGAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass)
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if (CharacterClassInfo == nullptr) return;
 	for (TSubclassOf<UGameplayAbility> AbilityClass : CharacterClassInfo->CommonAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 		ASC->GiveAbility(AbilitySpec);
+	}
+	const FCharacterClassDefaultInfo& DefaultInfo =	CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+	for (TSubclassOf<UGameplayAbility> AbilityClass : DefaultInfo.StartupAbilities)
+	{
+		if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(ASC->GetAvatarActor()))
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, CombatInterface->GetPlayerLevel());
+			ASC->GiveAbility(AbilitySpec);
+		}
 	}
 }
 
