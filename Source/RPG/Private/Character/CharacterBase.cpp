@@ -51,8 +51,8 @@ void ACharacterBase::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
 	Dissolve();
+	bDead = true;
 }
 
 void ACharacterBase::BeginPlay()
@@ -65,6 +65,16 @@ FVector ACharacterBase::GetCombatSocketLocation_Implementation()
 {
 	check(Weapon);
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
+bool ACharacterBase::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* ACharacterBase::GetAvatar_Implementation()
+{
+	return this;
 }
 
 void ACharacterBase::InitAbilityActorInfo()

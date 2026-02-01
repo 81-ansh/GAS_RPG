@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectTypes.h"
 #include "RPGAbilityTypes.h"
+#include "Engine/OverlapResult.h"
 #include "Game/RPGGameModeBase.h"
 #include "Interaction/CombatInterface.h"
 #include "Player/MainPlayerState.h"
@@ -128,5 +129,26 @@ void URPGAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& Ef
 	if (FRPGGameplayEffectContext* RPGEffectContext = static_cast<FRPGGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		RPGEffectContext->SetIsCriticalHit(bInIsCriticalHit);
+	}
+}
+
+void URPGAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject,
+	TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius,
+	const FVector& SphereOrigin)
+{
+	FCollisionQueryParams SphereParams;
+	SphereParams.AddIgnoredActors(ActorsToIgnore);
+	
+	TArray<FOverlapResult> Overlaps;
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		World->OverlapMultiByObjectType(Overlaps, SphereOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeSphere(Radius), SphereParams);
+		for (FOverlapResult& Overlap : Overlaps)
+		{
+			if (Overlap.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(Overlap.GetActor()))
+			{
+				OutOverlappingActors.AddUnique(ICombatInterface::Execute_GetAvatar(Overlap.GetActor()));
+			}
+		}
 	}
 }
