@@ -3,6 +3,7 @@
 
 #include "Character/CharacterBase.h"
 #include "AbilitySystemComponent.h"
+#include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "RPG/RPG.h"
@@ -61,10 +62,22 @@ void ACharacterBase::BeginPlay()
 	
 }
 
-FVector ACharacterBase::GetCombatSocketLocation_Implementation()
+FVector ACharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
+	const FRPGGameplayTags& GameplayTags = FRPGGameplayTags::Get();
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon) && IsValid(Weapon))
+	{
+		return Weapon->GetSocketLocation(WeaponTipSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandSocketName);
+	}
+	return FVector();
 }
 
 bool ACharacterBase::IsDead_Implementation() const
