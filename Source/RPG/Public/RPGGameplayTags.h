@@ -29,6 +29,7 @@ public:
 	/*
 	 * Secondary Attribute Tags
 	 */
+	
 	FGameplayTag Attributes_Secondary_Armor;
 	FGameplayTag Attributes_Secondary_ArmorPenetration;
 	FGameplayTag Attributes_Secondary_BlockChance;
@@ -48,6 +49,7 @@ public:
 	/*
 	 * Input Tags
 	 */
+	
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_1;
@@ -58,6 +60,7 @@ public:
 	/* 
 	 *  Damage Types
 	 */
+	
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lightning;
@@ -69,15 +72,25 @@ public:
 	/*
 	 * Abilities
 	 */
+	
 	FGameplayTag Abilities_Attack;
 	
 	/*
 	 * Montage
 	 */
 	
-	FGameplayTag Montage_Attack_Weapon;
-	FGameplayTag Montage_Attack_RightHand;
-	FGameplayTag Montage_Attack_LeftHand;
+	FGameplayTag Montage_Attack_1;
+	FGameplayTag Montage_Attack_2;
+	FGameplayTag Montage_Attack_3;
+	FGameplayTag Montage_Attack_4;
+	
+	/*
+	 * Combat Sockets
+	 */
+	
+	FGameplayTag CombatSocket_Weapon;
+	FGameplayTag CombatSocket_RightHand;
+	FGameplayTag CombatSocket_LeftHand;
 	
 	FGameplayTag Effects_HitReact;
 	
