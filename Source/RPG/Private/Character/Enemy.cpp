@@ -64,12 +64,12 @@ void AEnemy::UnHighlightActor()
 int32 AEnemy::GetPlayerLevel()
 {
 	return Level;
-	
 }
 
 void AEnemy::Die()
 {
 	SetLifeSpan(LifeSpan);
+	if (RPGAIController) RPGAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
 	Super::Die();
 }
 
