@@ -6,6 +6,7 @@
 #include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "RPG/RPG.h"
 
 // Sets default values
@@ -42,6 +43,8 @@ void ACharacterBase::Die()
 
 void ACharacterBase::MulticastHandleDeath_Implementation()
 {
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
+	
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
