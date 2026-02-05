@@ -119,6 +119,11 @@ FTaggedMontage ACharacterBase::GetTaggedMontageByTag_Implementation(const FGamep
 	return FTaggedMontage();
 }
 
+int32 ACharacterBase::GetMinionCount_Implementation()
+{
+	return MinionCount;
+}
+
 void ACharacterBase::InitAbilityActorInfo()
 {
 }
