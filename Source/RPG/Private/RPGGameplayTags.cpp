@@ -149,6 +149,7 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	/*
 	 * Map of Damage Type to Resistances
 	 */
+	
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistance_Lightning);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
@@ -169,6 +170,14 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Fire.FireBolt"), 
 	FString("FireBolt Ability Tag"));
+	
+	/*
+	 * Cooldown
+	 */
+	
+	GameplayTags.Cooldown_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Cooldown.Fire.FireBolt"), 
+	FString("FireBolt Cooldown Tag"));
 	
 	/*
 	 * Montage
