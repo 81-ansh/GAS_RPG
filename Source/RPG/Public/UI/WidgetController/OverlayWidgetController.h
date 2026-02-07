@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "UI/WidgetController/RPGWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
@@ -68,6 +69,8 @@ protected:
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag Tag);
+	
+	void OnInitializeStartupAbilities(URPGAbilitySystemComponent* RPGAbilitySystemComponent);
 };
 
 template <typename T>

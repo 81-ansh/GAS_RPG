@@ -22,8 +22,9 @@ void URPGAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<
 			AbilitySpec.DynamicAbilityTags.AddTag(RPGAbility->StartupInputTag);
 			GiveAbility(AbilitySpec);
 		}
-		
 	}
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast(this);
 }
 
 void URPGAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
