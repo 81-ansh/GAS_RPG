@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "AbilitySystem/RPGAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -82,4 +83,14 @@ void UOverlayWidgetController::OnInitializeStartupAbilities(URPGAbilitySystemCom
 {
 	//TODO: Get information about all given abilities, look up there ability info, and broadcast it to widgets.
 	if (!RPGAbilitySystemComponent->bStartupAbilitiesGiven) return;
+	
+	FForEachAbility BroadcastDelegate;
+	BroadcastDelegate.BindLambda([this, RPGAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)
+	{
+		//TODO: Need a way to figure out the ability tag for a given ability spec.
+		FRPGAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(RPGAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
+		Info.InputTag = RPGAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+		AbilityInfoDelegate.Broadcast(Info);
+	});
+	RPGAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
 }
