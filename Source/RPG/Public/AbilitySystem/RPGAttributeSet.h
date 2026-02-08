@@ -171,6 +171,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(URPGAttributeSet, IncomingDamage);
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData IncomingXP;
+	ATTRIBUTE_ACCESSORS(URPGAttributeSet, IncomingXP);
 
 	/*
 	 *  Primary Attributes Rep
