@@ -161,6 +161,7 @@ void ACharacterBase::AddCharacterAbilities()
 	if (!HasAuthority()) return;
 
 	RPGASC->AddCharacterAbilities(StartupAbilities);
+	RPGASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 }
 
 void ACharacterBase::Dissolve()

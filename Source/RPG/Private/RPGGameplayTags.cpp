@@ -75,7 +75,35 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	FString("Maximum amount of mana obtainable"));
 
 	/*
-	 * Control Tags
+	 * Resistances
+	 */
+	
+	GameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Attributes.Resistance.Fire"), 
+	FString("Resistance to Fire Damage"));
+	
+	GameplayTags.Attributes_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Attributes.Resistance.Lightning"), 
+	FString("Resistance to Lightning Damage"));
+	
+	GameplayTags.Attributes_Resistance_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Attributes.Resistance.Arcane"), 
+	FString("Resistance to Arcane Damage"));
+	
+	GameplayTags.Attributes_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Attributes.Resistance.Physical"), 
+	FString("Resistance to Physical Damage"));
+	
+	/*
+	 * Meta Attribute Tags
+	 */
+	
+	GameplayTags.Attributes_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Attributes.Meta.IncomingXP"), 
+	FString("Incoming XP Meta Attribute"));
+	
+	/*
+	 * Input Tags
 	 */
 	
 	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -125,26 +153,6 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Damage.Physical"), 
 	FString("Physical Damage Type"));
-	
-	/*
-	 * Resistances
-	 */
-	
-	GameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Attributes.Resistance.Fire"), 
-	FString("Resistance to Fire Damage"));
-	
-	GameplayTags.Attributes_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Attributes.Resistance.Lightning"), 
-	FString("Resistance to Lightning Damage"));
-	
-	GameplayTags.Attributes_Resistance_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Attributes.Resistance.Arcane"), 
-	FString("Resistance to Arcane Damage"));
-	
-	GameplayTags.Attributes_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Attributes.Resistance.Physical"), 
-	FString("Resistance to Physical Damage"));
 	
 	/*
 	 * Map of Damage Type to Resistances

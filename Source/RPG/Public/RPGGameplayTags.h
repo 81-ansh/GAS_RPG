@@ -41,11 +41,21 @@ public:
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
 	
+	/*
+	 * Resistance Tags
+	 */
+	
 	FGameplayTag Attributes_Resistance_Fire;
 	FGameplayTag Attributes_Resistance_Lightning;
 	FGameplayTag Attributes_Resistance_Arcane;
 	FGameplayTag Attributes_Resistance_Physical;
+	
+	/*
+	 * Meta Tags
+	 */
 
+	FGameplayTag Attributes_Meta_IncomingXP;
+	
 	/*
 	 * Input Tags
 	 */
