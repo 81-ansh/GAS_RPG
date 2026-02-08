@@ -20,6 +20,8 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
+	
+	CharacterClass = ECharacterClass::Elementalist;
 }
 
 void APlayerCharacter::PossessedBy(AController* NewController)
