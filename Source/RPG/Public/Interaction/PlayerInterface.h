@@ -48,5 +48,5 @@ public:
 	void AddToSpellPoints(int32 InSpellPoints);
 	
 	UFUNCTION(BlueprintNativeEvent)
-	void LevelUP();
+	void LevelUp();
 };

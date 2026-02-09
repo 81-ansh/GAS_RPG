@@ -65,7 +65,7 @@ void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 	MainPlayerState->AddToXP(InXP);
 }
 
-void APlayerCharacter::LevelUP_Implementation()
+void APlayerCharacter::LevelUp_Implementation()
 {
 	MulticastLevelUpParticles();
 }
@@ -93,7 +93,7 @@ int32 APlayerCharacter::FindLevelForXP_Implementation(int32 InXP) const
 {
 	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
 	check(MainPlayerState);
-	return MainPlayerState->GetPlayerLevel();
+	return MainPlayerState->LevelUpInfo->FindLevelForXP(InXP);
 }
 
 int32 APlayerCharacter::GetAttributePointsReward_Implementation(int32 Level) const

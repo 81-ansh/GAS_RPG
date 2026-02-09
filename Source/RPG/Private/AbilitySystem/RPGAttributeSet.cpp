@@ -199,7 +199,7 @@ void URPGAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 				SetHealth(GetMaxHealth());
 				SetMana(GetMaxMana());
 				
-				IPlayerInterface::Execute_LevelUP(Props.SourceCharacter);
+				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 			}
 			
 			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
