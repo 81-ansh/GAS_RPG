@@ -48,7 +48,12 @@ void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 	MainPlayerState->AddToXP(InXP);
 }
 
-int32 APlayerCharacter::GetPlayerLevel()
+void APlayerCharacter::LevelUP_Implementation()
+{
+	
+}
+
+int32 APlayerCharacter::GetPlayerLevel_Implementation()
 {
 	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
 	check(MainPlayerState);
