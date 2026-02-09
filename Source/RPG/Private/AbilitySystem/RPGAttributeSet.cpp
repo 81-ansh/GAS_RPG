@@ -9,6 +9,7 @@
 #include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
+#include "Interaction/PlayerInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/MainPlayerController.h"
 #include "RPG/RPGLogChannel.h"
@@ -179,6 +180,12 @@ void URPGAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	{
 		const float LocalIncomingXP = GetIncomingXP();
 		SetIncomingXP(0.f);
+		
+		// TODO: See if we should level up
+		if (Props.SourceCharacter->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
+		}
 	}
 }
 
