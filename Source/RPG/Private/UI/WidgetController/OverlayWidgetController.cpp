@@ -2,8 +2,6 @@
 
 
 #include "UI/WidgetController/OverlayWidgetController.h"
-
-#include "EditorDirectories.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "AbilitySystem/RPGAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
@@ -24,6 +22,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	AMainPlayerState* MainPlayerState = CastChecked<AMainPlayerState>(PlayerState);
 	MainPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	MainPlayerState->OnLevelChangedDelegate.AddLambda(
+		[this](int32 NewLevel)
+		{
+			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);
+		}
+	);
 	
 	const URPGAttributeSet* RPGAttributeSet = CastChecked<URPGAttributeSet>(AttributeSet);
 
