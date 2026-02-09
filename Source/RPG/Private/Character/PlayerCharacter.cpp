@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/MainPlayerController.h"
 #include "Player/MainPlayerState.h"
@@ -53,9 +54,54 @@ void APlayerCharacter::LevelUP_Implementation()
 	
 }
 
-int32 APlayerCharacter::GetPlayerLevel_Implementation()
+int32 APlayerCharacter::GetXP_Implementation() const
+{
+	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	return MainPlayerState->GetXP();
+}
+
+int32 APlayerCharacter::FindLevelForXP_Implementation(int32 InXP) const
+{
+	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	return MainPlayerState->GetPlayerLevel();
+}
+
+int32 APlayerCharacter::GetAttributePointsReward_Implementation(int32 Level) const
+{
+	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	return MainPlayerState->LevelUpInfo->LevelUpInformation[Level].AttributePointAward;
+}
+
+int32 APlayerCharacter::GetSpellPointsReward_Implementation(int32 Level) const
+{
+	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	return MainPlayerState->LevelUpInfo->LevelUpInformation[Level].SpellPointAward;
+}
+
+void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 {
 	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	MainPlayerState->AddToLevel(InPlayerLevel);
+}
+
+void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
+{
+	// TODO: Add AttributePoints to PlayerState
+}
+
+void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
+{
+	// TODO: Add SpellPoints to PlayerState
+}
+
+int32 APlayerCharacter::GetPlayerLevel_Implementation()
+{
+	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
 	check(MainPlayerState);
 	return MainPlayerState->GetPlayerLevel();
 }
