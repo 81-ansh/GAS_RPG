@@ -119,12 +119,16 @@ void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 
 void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
 {
-	// TODO: Add AttributePoints to PlayerState
+	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	MainPlayerState->AddToAttributePoints(InAttributePoints);
 }
 
 void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
 {
-	// TODO: Add SpellPoints to PlayerState
+	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	MainPlayerState->AddToSpellPoints(InSpellPoints);
 }
 
 int32 APlayerCharacter::GetPlayerLevel_Implementation()
