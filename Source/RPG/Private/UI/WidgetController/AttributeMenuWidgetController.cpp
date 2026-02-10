@@ -6,6 +6,7 @@
 #include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
+#include "Player/MainPlayerState.h"
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
@@ -32,6 +33,14 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			}
 		);
 	}
+	
+	AMainPlayerState* MainPlayerState = CastChecked<AMainPlayerState>(PlayerState);
+	MainPlayerState->OnAttributePointsChangedDelegate.AddLambda(
+		[this](int32 Points)
+		{
+			AttributePointsChangedDelegate.Broadcast(Points);
+		}
+	);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const
