@@ -4,6 +4,7 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 
 #include "RPGGameplayTags.h"
+#include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "AbilitySystem/RPGAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include "Player/MainPlayerState.h"
@@ -43,6 +44,12 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			AttributePointsChangedDelegate.Broadcast(Points);
 		}
 	);
+}
+
+void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	URPGAbilitySystemComponent* RPGASC = CastChecked<URPGAbilitySystemComponent>(AbilitySystemComponent);
+	RPGASC->UpgradeAttribute(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const

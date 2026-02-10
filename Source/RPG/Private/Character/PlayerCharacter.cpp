@@ -131,6 +131,20 @@ void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
 	MainPlayerState->AddToSpellPoints(InSpellPoints);
 }
 
+int32 APlayerCharacter::GetAttributePoints_Implementation() const
+{
+	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	return MainPlayerState->GetAttributePoints();
+}
+
+int32 APlayerCharacter::GetSpellPoints_Implementation() const
+{
+	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
+	check(MainPlayerState);
+	return MainPlayerState->GetSpellPoints();
+}
+
 int32 APlayerCharacter::GetPlayerLevel_Implementation()
 {
 	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
