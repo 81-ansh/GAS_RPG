@@ -47,11 +47,13 @@ void AMainPlayerState::AddToLevel(int32 InLevel)
 void AMainPlayerState::AddToAttributePoints(int32 InPoints)
 {
 	AttributePoints += InPoints;
+	OnAttributePointsChangedDelegate.Broadcast(AttributePoints);
 }
 
 void AMainPlayerState::AddToSpellPoints(int32 InPoints)
 {
 	SpellPoints += InPoints;
+	OnSpellPointsChangedDelegate.Broadcast(SpellPoints);
 }
 
 void AMainPlayerState::SetXP(int32 InXP)
