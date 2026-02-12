@@ -219,7 +219,7 @@ void URPGAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, 
 	if (Attribute == GetMaxManaAttribute() && bTopOffMana)
 	{
 		SetMana(GetMaxMana());
-		bTopOffMana = false;
+		bTopOffMana = false;	
 	}
 }
 
