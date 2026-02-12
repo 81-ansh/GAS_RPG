@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class RPG_API USpellMenuWidgetController : public UOverlayWidgetController
 {
 	GENERATED_BODY()

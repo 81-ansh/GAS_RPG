@@ -14,34 +14,56 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/HUD/RPGHUD.h"
 
-UOverlayWidgetController* URPGAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+bool URPGAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, ARPGHUD*& OutHUD)
 {
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
 	{
-		if (ARPGHUD* RPGHUD = Cast<ARPGHUD>(PC->GetHUD()))
+		OutHUD = Cast<ARPGHUD>(PC->GetHUD());
+		if (OutHUD)
 		{
 			AMainPlayerState* PS = PC->GetPlayerState<AMainPlayerState>();
 			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 			UAttributeSet* AS =	PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return RPGHUD->GetOverlayWidgetController(WidgetControllerParams);
+			
+			OutWCParams.AttributeSet = AS;
+			OutWCParams.AbilitySystemComponent = ASC;
+			OutWCParams.PlayerState = PS;
+			OutWCParams.PlayerController = PC;
+			return true;
 		}
+	}
+	return false;
+}
+
+UOverlayWidgetController* URPGAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	ARPGHUD* HUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, HUD))
+	{
+		return HUD->GetOverlayWidgetController(WCParams);
 	}
 	return nullptr;
 }
 
 UAttributeMenuWidgetController* URPGAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
 {
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	FWidgetControllerParams WCParams;
+	ARPGHUD* HUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, HUD))
 	{
-		if (ARPGHUD* RPGHUD = Cast<ARPGHUD>(PC->GetHUD()))
-		{
-			AMainPlayerState* PS = PC->GetPlayerState<AMainPlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return RPGHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
-		}
+		return HUD->GetAttributeMenuWidgetController(WCParams);
+	}
+	return nullptr;
+}
+
+USpellMenuWidgetController* URPGAbilitySystemLibrary::GetSpellMenuWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	ARPGHUD* HUD = nullptr;
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, HUD))
+	{
+		return HUD->GetSpellMenuWidgetController(WCParams);
 	}
 	return nullptr;
 }

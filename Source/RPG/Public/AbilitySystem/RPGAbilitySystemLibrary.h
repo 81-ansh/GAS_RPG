@@ -7,7 +7,10 @@
 #include "Data/CharacterClassInfo.h"
 #include "RPGAbilitySystemLibrary.generated.h"
 
+class USpellMenuWidgetController;
 class UAbilitySystemComponent;
+struct FWidgetControllerParams;
+
 /**
  * 
  */
@@ -17,12 +20,18 @@ class RPG_API URPGAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
+	
+	UFUNCTION(BlueprintPure, Category = "RPGAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, ARPGHUD*& OutHUD);
 
-	UFUNCTION(BlueprintPure, Category = "RPGAbilitySystemLibrary|WidgetController")
+	UFUNCTION(BlueprintPure, Category = "RPGAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 
-	UFUNCTION(BlueprintPure, Category = "RPGAbilitySystemLibrary|WidgetController")
+	UFUNCTION(BlueprintPure, Category = "RPGAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintPure, Category = "RPGAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "RPGAbilitySystemLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);
