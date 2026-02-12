@@ -10,67 +10,62 @@
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	const URPGAttributeSet* RPGAttributeSet = CastChecked<URPGAttributeSet>(AttributeSet);
-
-	OnHealthChanged.Broadcast(RPGAttributeSet->GetHealth());
-	OnMaxHealthChanged.Broadcast(RPGAttributeSet->GetMaxHealth());
-	OnManaChanged.Broadcast(RPGAttributeSet->GetMana());
-	OnMaxManaChanged.Broadcast(RPGAttributeSet->GetMaxMana());
+	OnHealthChanged.Broadcast(GetAS()->GetHealth());
+	OnMaxHealthChanged.Broadcast(GetAS()->GetMaxHealth());
+	OnManaChanged.Broadcast(GetAS()->GetMana());
+	OnMaxManaChanged.Broadcast(GetAS()->GetMaxMana());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	AMainPlayerState* MainPlayerState = CastChecked<AMainPlayerState>(PlayerState);
-	MainPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
-	MainPlayerState->OnLevelChangedDelegate.AddLambda(
+	GetPS()->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	GetPS()->OnLevelChangedDelegate.AddLambda(
 		[this](int32 NewLevel)
 		{
 			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);
 		}
 	);
-	
-	const URPGAttributeSet* RPGAttributeSet = CastChecked<URPGAttributeSet>(AttributeSet);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(RPGAttributeSet->GetHealthAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetAS()->GetHealthAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
 				OnHealthChanged.Broadcast(Data.NewValue);
 			}
 		);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(RPGAttributeSet->GetMaxHealthAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetAS()->GetMaxHealthAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
 				OnMaxHealthChanged.Broadcast(Data.NewValue);
 			}
 		);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(RPGAttributeSet->GetManaAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetAS()->GetManaAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
 				OnManaChanged.Broadcast(Data.NewValue);
 			}
 		);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(RPGAttributeSet->GetMaxManaAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetAS()->GetMaxManaAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
 				OnMaxManaChanged.Broadcast(Data.NewValue);
 			}
 		);
 	
-	if (URPGAbilitySystemComponent* RPGASC = Cast<URPGAbilitySystemComponent>(AbilitySystemComponent))
+	if (GetASC())
 	{
-		if (RPGASC->bStartupAbilitiesGiven)
+		if (GetASC()->bStartupAbilitiesGiven)
 		{
-			OnInitializeStartupAbilities(RPGASC);
+			BroadcastAbilityInfo();
 		}
 		else
 		{
-			RPGASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitializeStartupAbilities);
+			GetASC()->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::BroadcastAbilityInfo);
 		}
 		
-		RPGASC->EffectAssetTags.AddLambda(
+		GetASC()->EffectAssetTags.AddLambda(
 		[this](const FGameplayTagContainer& AssetTags)
 			{
 				for (const FGameplayTag& Tag : AssetTags)
@@ -89,26 +84,9 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	}
 }
 
-void UOverlayWidgetController::OnInitializeStartupAbilities(URPGAbilitySystemComponent* RPGAbilitySystemComponent)
+void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 {
-	//TODO: Get information about all given abilities, look up there ability info, and broadcast it to widgets.
-	if (!RPGAbilitySystemComponent->bStartupAbilitiesGiven) return;
-	
-	FForEachAbility BroadcastDelegate;
-	BroadcastDelegate.BindLambda([this, RPGAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)
-	{
-		//TODO: Need a way to figure out the ability tag for a given ability spec.
-		FRPGAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(RPGAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-		Info.InputTag = RPGAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
-		AbilityInfoDelegate.Broadcast(Info);
-	});
-	RPGAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
-}
-
-void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
-{
-	const AMainPlayerState* MainPlayerState = CastChecked<AMainPlayerState>(PlayerState);
-	const ULevelUpInfo* LevelUpInfo = MainPlayerState->LevelUpInfo;
+	const ULevelUpInfo* LevelUpInfo = GetPS()->LevelUpInfo;
 	checkf(LevelUpInfo, TEXT("Unable to find LevelUpInfo. Please fill out MainPlayerState Blueprint"));
 	
 	const int32 Level = LevelUpInfo->FindLevelForXP(NewXP);
