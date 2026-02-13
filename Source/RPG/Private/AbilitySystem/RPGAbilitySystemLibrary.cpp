@@ -124,10 +124,16 @@ int32 URPGAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* World
 
 UCharacterClassInfo* URPGAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
-	ARPGGameModeBase* RPGGameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	const ARPGGameModeBase* RPGGameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (RPGGameMode == nullptr) return nullptr;
-
 	return RPGGameMode->CharacterClassInfo;
+}
+
+UAbilityInfo* URPGAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	const ARPGGameModeBase* RPGGameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (RPGGameMode == nullptr) return nullptr;
+	return RPGGameMode->AbilityInfo;
 }
 
 bool URPGAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
