@@ -115,6 +115,11 @@ void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
 	check(MainPlayerState);
 	MainPlayerState->AddToLevel(InPlayerLevel);
+	
+	if (URPGAbilitySystemComponent* ASC = Cast<URPGAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		ASC->UpdateAbilityStatuses(MainPlayerState->GetPlayerLevel());
+	}
 }
 
 void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
