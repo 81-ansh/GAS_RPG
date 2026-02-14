@@ -18,11 +18,6 @@ UCLASS()
 class RPG_API URPGProjectileSpell : public URPGDamageGameplayAbility
 {
 	GENERATED_BODY()
-	
-public:
-	
-	virtual FString GetDescription(int32 Level) override;
-	virtual FString GetNextLevelDescription(int32 Level) override;
 
 protected:
 
