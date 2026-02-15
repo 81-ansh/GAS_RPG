@@ -1,7 +1,51 @@
 #pragma once
 
+#include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
 #include "RPGAbilityTypes.generated.h"
+
+class UGameplayEffect;
+
+USTRUCT(BlueprintType)
+struct FDamageEffectParams
+{
+	GENERATED_BODY()
+	
+	FDamageEffectParams(){}
+	
+	UPROPERTY()
+	TObjectPtr<UObject> WorldContextObject = nullptr;
+	
+	UPROPERTY()
+	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr;
+	
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent;
+	
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent;
+	
+	UPROPERTY()
+	float BaseDamage = 0.f;
+	
+	UPROPERTY()
+	float AbilityLevel = 1.f;
+	
+	UPROPERTY()
+	FGameplayTag DamageType = FGameplayTag();
+	
+	UPROPERTY()
+	float DebuffChance = 0.f;
+	
+	UPROPERTY()
+	float DebuffDamage = 0.f;
+	
+	UPROPERTY()
+	float DebuffDuration = 0.f;
+	
+	UPROPERTY()
+	float DebuffFrequency = 0.f;
+};
 
 USTRUCT(BlueprintType)
 struct FRPGGameplayEffectContext : public FGameplayEffectContext

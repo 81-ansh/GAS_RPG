@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RPGAbilityTypes.h"
 #include "AbilitySystem/Abilities/RPGGameplayAbility.h"
 #include "Interaction/CombatInterface.h"
 #include "RPGDamageGameplayAbility.generated.h"
@@ -19,6 +20,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
+	
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 	
 protected:
 
