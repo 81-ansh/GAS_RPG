@@ -42,15 +42,6 @@ public:
 	FGameplayTag Attributes_Secondary_MaxMana;
 	
 	/*
-	 * Resistance Tags
-	 */
-	
-	FGameplayTag Attributes_Resistance_Fire;
-	FGameplayTag Attributes_Resistance_Lightning;
-	FGameplayTag Attributes_Resistance_Arcane;
-	FGameplayTag Attributes_Resistance_Physical;
-	
-	/*
 	 * Meta Tags
 	 */
 
@@ -77,9 +68,29 @@ public:
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Arcane;
-	FGameplayTag Damage_Physical;
+	FGameplayTag Damage_Physical;	
+	
+	/*
+	 * Resistance Tags
+	 */
+	
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
 	
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	
+	/*
+	 * Debuff
+	 */
+	
+	FGameplayTag Debuff_Burn;
+	FGameplayTag Debuff_Stun;
+	FGameplayTag Debuff_Arcane;
+	FGameplayTag Debuff_Physical;
+	
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
 	
 	/*
 	 * Abilities
@@ -127,6 +138,10 @@ public:
 	FGameplayTag CombatSocket_RightHand;
 	FGameplayTag CombatSocket_LeftHand;
 	FGameplayTag CombatSocket_Tail;
+	
+	/*
+	 * Effects
+	 */
 	
 	FGameplayTag Effects_HitReact;
 	
