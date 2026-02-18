@@ -61,9 +61,13 @@ bool FRPGGameplayEffectContext::NetSerialize(FArchive& Ar, class UPackageMap* Ma
 		{
 			RepBits |= 1 << 13;
 		}
+		if (!DeathImpulse.IsZero())
+		{
+			RepBits |= 1 << 14;
+		}
 	}
 
-	Ar.SerializeBits(&RepBits, 14);
+	Ar.SerializeBits(&RepBits, 15		);
 
 	if (RepBits & (1 << 0))
 	{
@@ -139,6 +143,10 @@ bool FRPGGameplayEffectContext::NetSerialize(FArchive& Ar, class UPackageMap* Ma
 			}
 		}
 		DamageType->NetSerialize(Ar, Map, bOutSuccess);
+	}
+	if (RepBits & (1 << 14))
+	{
+		DeathImpulse.NetSerialize(Ar, Map, bOutSuccess);
 	}
 
 	if (Ar.IsLoading())
