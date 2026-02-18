@@ -165,6 +165,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	Cast<URPGAbilitySystemComponent>(MainPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = MainPlayerState->GetAbilitySystemComponent();
 	AttributeSet = MainPlayerState->GetAttributeSet();
+	OnASCRegistered.Broadcast(AbilitySystemComponent);
 
 	if (AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(GetController()))
 	{
