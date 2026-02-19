@@ -2,12 +2,10 @@
 
 
 #include "AbilitySystem/Abilities/RPGProjectileSpell.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Actor/RPGProjectile.h"
 #include "Interaction/CombatInterface.h"
-#include "RPG/Public/RPGGameplayTags.h"
 
 void URPGProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                           const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
