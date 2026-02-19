@@ -15,6 +15,7 @@ class IEnemyInterface;
 class URPGInputConfig;
 class URPGAbilitySystemComponent;
 class USplineComponent;
+class UNiagaraSystem;
 
 /**
  * 
@@ -79,6 +80,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 
 	void AutoRun();
 
