@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/Abilities/RPGBeamSpell.h"
 
+#include "GameFramework/Character.h"
+
 void URPGBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
 	if (HitResult.bBlockingHit)
@@ -16,10 +18,12 @@ void URPGBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 	}
 }
 
-void URPGBeamSpell::StoreOwnerPlayerController()
+void URPGBeamSpell::StoreOwnerVariables()
 {
+	
 	if (CurrentActorInfo)
 	{
 		OwnerPlayerController = CurrentActorInfo->PlayerController.Get();
+		OwnerCharacter = Cast<ACharacter>(CurrentActorInfo->AvatarActor); 
 	}
 }
