@@ -64,7 +64,8 @@ void ACharacterBase::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Dissolve();
 	bDead = true;
-	OnDeath.Broadcast(this);
+	BurnDebuffComponent->Deactivate();
+	OnDeathDelegate.Broadcast(this);
 }
 
 void ACharacterBase::BeginPlay()
@@ -147,9 +148,9 @@ FOnASCRegistered ACharacterBase::GetOnASCRegisteredDelegate()
 	return OnASCRegistered;
 }
 
-FOnDeath& ACharacterBase::GetOnDeathDelegate()
+FOnDeathSignature& ACharacterBase::GetOnDeathDelegate()
 {
-	return OnDeath;
+	return OnDeathDelegate;
 }
 
 USkeletalMeshComponent* ACharacterBase::GetWeapon_Implementation()
