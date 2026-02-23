@@ -20,6 +20,10 @@ ACharacterBase::ACharacterBase()
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
 	BurnDebuffComponent->SetupAttachment(GetRootComponent());
 	BurnDebuffComponent->DebuffTag = FRPGGameplayTags::Get().Debuff_Burn;
+	
+	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("StunDebuffComponent");
+	StunDebuffComponent->SetupAttachment(GetRootComponent());
+	StunDebuffComponent->DebuffTag = FRPGGameplayTags::Get().Debuff_Stun;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
@@ -37,6 +41,7 @@ void ACharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(ACharacterBase, bIsStunned);
+	DOREPLIFETIME(ACharacterBase, bIsBurned);
 }
 
 UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
@@ -74,6 +79,7 @@ void ACharacterBase::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	Dissolve();
 	bDead = true;
 	BurnDebuffComponent->Deactivate();
+	StunDebuffComponent->Deactivate();
 	OnDeathDelegate.Broadcast(this);
 }
 
@@ -84,6 +90,11 @@ void ACharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCou
 }
 
 void ACharacterBase::OnRep_Stunned()
+{
+	
+}
+
+void ACharacterBase::OnRep_Burned()
 {
 	
 }
@@ -163,7 +174,7 @@ ECharacterClass ACharacterBase::GetCharacterClass_Implementation()
 	return CharacterClass;
 }
 
-FOnASCRegistered ACharacterBase::GetOnASCRegisteredDelegate()
+FOnASCRegistered& ACharacterBase::GetOnASCRegisteredDelegate()
 {
 	return OnASCRegistered;
 }
