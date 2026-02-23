@@ -225,6 +225,8 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.None"), 
 	FString("No Ability - like the nullptr for Ability Tags"));
+	
+	
 
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Attack"), 
@@ -234,6 +236,8 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	FName("Abilities.Summon"), 
 	FString("Summon Ability Tag"));
 	
+	
+	
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Fire.FireBolt"), 
 	FString("FireBolt Ability Tag"));
@@ -241,6 +245,22 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Lightning_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Lightning.Electrocute"), 
 	FString("Electrocute Ability Tag"));
+	
+	
+	
+	GameplayTags.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Passive.HaloOfProtection"), 
+	FString("Halo Of Protection"));
+	
+	GameplayTags.Abilities_Passive_LifeSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Passive.LifeSiphon"), 
+	FString("Life Siphon"));
+	
+	GameplayTags.Abilities_Passive_ManaSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Passive.ManaSiphon"), 
+	FString("Mana Siphon"));
+	
+	
 	
 	GameplayTags.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Status.Locked"), 
@@ -258,6 +278,8 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	FName("Abilities.Status.Equipped"), 
 	FString("Equipped Status"));
 	
+	
+	
 	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Type.Offensive"), 
 	FString("Type Offensive"));
@@ -269,6 +291,8 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Type.None"), 
 	FString("Type None"));
+	
+	
 	
 	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.HitReact"), 
