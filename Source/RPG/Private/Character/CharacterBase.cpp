@@ -42,6 +42,7 @@ void ACharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	
 	DOREPLIFETIME(ACharacterBase, bIsStunned);
 	DOREPLIFETIME(ACharacterBase, bIsBurned);
+	DOREPLIFETIME(ACharacterBase, bIsBeingShocked);
 }
 
 UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
@@ -187,6 +188,16 @@ FOnDeathSignature& ACharacterBase::GetOnDeathDelegate()
 USkeletalMeshComponent* ACharacterBase::GetWeapon_Implementation()
 {
 	return Weapon;
+}
+
+bool ACharacterBase::IsBeingShocked_Implementation() const
+{
+	return bIsBeingShocked;
+}
+
+void ACharacterBase::SetIsBeingShocked_Implementation(bool bInShock)
+{
+	bIsBeingShocked = bInShock;
 }
 
 void ACharacterBase::InitAbilityActorInfo()
