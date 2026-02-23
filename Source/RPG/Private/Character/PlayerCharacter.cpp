@@ -4,6 +4,7 @@
 #include "Character/PlayerCharacter.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystemComponent.h"
+#include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
@@ -157,6 +158,27 @@ int32 APlayerCharacter::GetPlayerLevel_Implementation()
 	return MainPlayerState->GetPlayerLevel();
 }
 
+void APlayerCharacter::OnRep_Stunned()
+{
+	if (URPGAbilitySystemComponent* ASC = Cast<URPGAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		const FRPGGameplayTags& GameplayTags = FRPGGameplayTags::Get();
+		FGameplayTagContainer BlockedTags;
+		BlockedTags.AddTag(GameplayTags.Player_Block_CursorTrace);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputHeld);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputPressed);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputReleased);
+		if (bIsStunned)
+		{
+			ASC->AddLooseGameplayTags(BlockedTags);
+		}
+		else
+		{
+			ASC->RemoveLooseGameplayTags(BlockedTags);
+		}
+	}
+}
+
 void APlayerCharacter::InitAbilityActorInfo()
 {
 	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
@@ -166,6 +188,8 @@ void APlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = MainPlayerState->GetAbilitySystemComponent();
 	AttributeSet = MainPlayerState->GetAttributeSet();
 	OnASCRegistered.Broadcast(AbilitySystemComponent);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FRPGGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &APlayerCharacter::StunTagChanged);
+	
 
 	if (AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(GetController()))
 	{
