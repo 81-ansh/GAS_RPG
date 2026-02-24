@@ -226,6 +226,11 @@ void URPGAbilitySystemComponent::AssignSlotToAbility(FGameplayAbilitySpec& Spec,
 	Spec.GetDynamicSpecSourceTags().AddTag(Slot);
 }
 
+void URPGAbilitySystemComponent::MulticastActivatePassiveEffect_Implementation(const FGameplayTag& AbilityTag, bool bActivate)
+{
+	ActivatePassiveEffect.Broadcast(AbilityTag, bActivate);
+}
+
 FGameplayAbilitySpec* URPGAbilitySystemComponent::GetSpecFromAbilityTag(const FGameplayTag& AbilityTag)
 {
 	FScopedAbilityListLock ActiveScopeLoc(*this);
@@ -338,6 +343,7 @@ void URPGAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamepl
 					
 					if (IsPassiveAbility(*SpecWithSlot))
 					{
+						MulticastActivatePassiveEffect(GetAbilityTagFromSpec(*SpecWithSlot), false);
 						DeactivatePassiveAbility.Broadcast(GetAbilityTagFromSpec(*SpecWithSlot));
 					}
 					
@@ -349,6 +355,7 @@ void URPGAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamepl
 				if (IsPassiveAbility(*AbilitySpec))
 				{
 					TryActivateAbility(AbilitySpec->Handle);
+					MulticastActivatePassiveEffect(AbilityTag, true);
 				}
 			}
 			AssignSlotToAbility(*AbilitySpec, Slot);
