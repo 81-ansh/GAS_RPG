@@ -9,6 +9,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
+#include "Actor/MagicCircle.h"
 #include "Components/SplineComponent.h"
 #include "Input/RPGInputComponent.h"
 #include "GameFramework/Character.h"
@@ -46,6 +47,23 @@ void AMainPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
 	AutoRun();
+	UpdateMagicCircleLocation();
+}
+
+void AMainPlayerController::ShowMagicCircle()
+{
+	if (!IsValid(MagicCircle))
+	{
+		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+	}
+}
+
+void AMainPlayerController::HideMagicCircle()
+{
+	if (IsValid(MagicCircle))
+	{
+		MagicCircle->Destroy();
+	}
 }
 
 void AMainPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit)
@@ -74,6 +92,14 @@ void AMainPlayerController::AutoRun()
 		{
 			bAutoRunning = false;
 		}
+	}
+}
+
+void AMainPlayerController::UpdateMagicCircleLocation()
+{
+	if (IsValid(MagicCircle))
+	{
+		MagicCircle->SetActorLocation(CursorHit.ImpactPoint);
 	}
 }
 
