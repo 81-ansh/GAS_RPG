@@ -237,7 +237,7 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	FString("Summon Ability Tag"));
 	
 	
-	
+	// Offensive Spells
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Fire.FireBolt"), 
 	FString("FireBolt Ability Tag"));
@@ -246,8 +246,12 @@ void FRPGGameplayTags::InitializeNativeGameplayTags()
 	FName("Abilities.Lightning.Electrocute"), 
 	FString("Electrocute Ability Tag"));
 	
+	GameplayTags.Abilities_Arcane_ArcaneShards = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Arcane.ArcaneShards"), 
+	FString("Arcane Shards Ability Tag"));
 	
 	
+	// Passive Spells
 	GameplayTags.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Passive.HaloOfProtection"), 
 	FString("Halo Of Protection"));
