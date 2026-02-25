@@ -46,20 +46,18 @@ void URPGAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 {
 	if (!InputTag.IsValid()) return;
 
-	FScopedAbilityListLock ActiveScopeLock(*this);
+	FScopedAbilityListLock ScopedAbilityListLock(*this);
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
 		{
 			AbilitySpecInputPressed(AbilitySpec);
-			if (!AbilitySpec.IsActive())
+			if (AbilitySpec.IsActive())
 			{
-				TArray<UGameplayAbility*> Instances = AbilitySpec.GetAbilityInstances();
-				if (Instances.Num() > 0)
+				TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
+				for (UGameplayAbility* AbilityInstance : AbilityInstances)
 				{
-					const FGameplayAbilityActivationInfo& ActivationInfo = Instances.Last()->GetCurrentActivationInfoRef();
-					FPredictionKey OrigianalPredictionKey = ActivationInfo.GetActivationPredictionKey();
-					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, OrigianalPredictionKey);
+					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilityInstance->GetCurrentActivationInfo().GetActivationPredictionKey());
 				}
 			}
 		}
@@ -86,30 +84,6 @@ void URPGAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTa
 
 void URPGAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
-	
-	if (!InputTag.IsValid()) return;
-
-	FScopedAbilityListLock ActiveScopeLock(*this);
-	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
-	{
-		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
-		{
-			AbilitySpecInputReleased(AbilitySpec);
-			if (!AbilitySpec.IsActive())
-			{
-				TArray<UGameplayAbility*> Instances = AbilitySpec.GetAbilityInstances();
-				if (Instances.Num() > 0)
-				{
-					const FGameplayAbilityActivationInfo& ActivationInfo = Instances.Last()->GetCurrentActivationInfoRef();
-					FPredictionKey OrigianalPredictionKey = ActivationInfo.GetActivationPredictionKey();
-					InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, OrigianalPredictionKey);
-				}
-			}
-		}
-	}
-
-	
-	/*
 	if (!InputTag.IsValid()) return;
 
 	FScopedAbilityListLock ScopedAbilityListLock(*this);
@@ -128,7 +102,6 @@ void URPGAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& Inp
 			}
 		}
 	}
-	*/
 }
 
 void URPGAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
