@@ -10,6 +10,7 @@
 #include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "Actor/MagicCircle.h"
+#include "Components/DecalComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/RPGInputComponent.h"
 #include "GameFramework/Character.h"
@@ -50,11 +51,15 @@ void AMainPlayerController::PlayerTick(float DeltaTime)
 	UpdateMagicCircleLocation();
 }
 
-void AMainPlayerController::ShowMagicCircle()
+void AMainPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
 	if (!IsValid(MagicCircle))
 	{
 		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+		if (DecalMaterial)
+		{
+			MagicCircle->MagicCircleDecal->SetMaterial(0, DecalMaterial);
+		}
 	}
 }
 

@@ -152,6 +152,22 @@ int32 APlayerCharacter::GetSpellPoints_Implementation() const
 	return MainPlayerState->GetSpellPoints();
 }
 
+void APlayerCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial)
+{
+	if (AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(GetController()))
+	{
+		MainPlayerController->ShowMagicCircle(DecalMaterial);
+	}
+}
+
+void APlayerCharacter::HideMagicCircle_Implementation()
+{
+	if (AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(GetController()))
+	{
+		MainPlayerController->HideMagicCircle();
+	}
+}
+
 int32 APlayerCharacter::GetPlayerLevel_Implementation()
 {
 	const AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
