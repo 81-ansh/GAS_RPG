@@ -157,6 +157,7 @@ void APlayerCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalM
 	if (AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(GetController()))
 	{
 		MainPlayerController->ShowMagicCircle(DecalMaterial);
+		MainPlayerController->bShowMouseCursor = false;
 	}
 }
 
@@ -165,6 +166,7 @@ void APlayerCharacter::HideMagicCircle_Implementation()
 	if (AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(GetController()))
 	{
 		MainPlayerController->HideMagicCircle();
+		MainPlayerController->bShowMouseCursor = true;
 	}
 }
 
