@@ -54,3 +54,8 @@ FString URPGFireBlast::GetNextLevelDescription(int32 Level)
 			"<Damage>%d</><Default> radial fire damage with a chance to burn</>"
 			), Level, ManaCost, Cooldown, NumFireBalls, ScaledDamage);
 }
+
+TArray<ARPGFireBall*> URPGFireBlast::SpawnFireBalls()
+{
+	return TArray<ARPGFireBall*>();
+}

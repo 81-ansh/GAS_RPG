@@ -6,6 +6,7 @@
 #include "AbilitySystem/Abilities/RPGDamageGameplayAbility.h"
 #include "RPGFireBlast.generated.h"
 
+class ARPGFireBall;
 /**
  * 
  */
@@ -19,8 +20,16 @@ public:
 	virtual FString GetDescription(int32 Level) override;
 	virtual FString GetNextLevelDescription(int32 Level) override;
 	
+	UFUNCTION(BlueprintCallable)
+	TArray<ARPGFireBall*> SpawnFireBalls();
+	
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "FireBlast")
 	int32 NumFireBalls = 12;
+	
+private:
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ARPGFireBall> FireBallClass;
 };
