@@ -6,6 +6,7 @@
 void ARPGFireBall::BeginPlay()
 {
 	Super::BeginPlay();
+	StartOutgoingTimeline();
 }
 
 void ARPGFireBall::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

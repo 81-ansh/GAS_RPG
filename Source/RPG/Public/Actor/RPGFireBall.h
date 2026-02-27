@@ -16,7 +16,11 @@ class RPG_API ARPGFireBall : public ARPGProjectile
 	
 public:
 	
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartOutgoingTimeline();
 	
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<AActor> ReturnToActor;
 	
 protected:
 	
