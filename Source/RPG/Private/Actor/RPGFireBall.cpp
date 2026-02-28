@@ -4,7 +4,10 @@
 #include "Actor/RPGFireBall.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayCueManager.h"
+#include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemLibrary.h"
+#include "Components/AudioComponent.h"
 
 void ARPGFireBall::BeginPlay()
 {
@@ -28,4 +31,21 @@ void ARPGFireBall::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 			URPGAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
 		}
 	}
+}
+
+void ARPGFireBall::OnHit()
+{
+	if (GetOwner())
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.Location = GetActorLocation();
+		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(GetOwner(), FRPGGameplayTags::Get().GameplayCue_FireBlast, CueParams);
+	}
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
+	}
+	
+	bHit = true;
 }
