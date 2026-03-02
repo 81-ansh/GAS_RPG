@@ -33,7 +33,7 @@ void UMVVM_LoadMenu::NewSlotButtonPressed(int32 Slot, const FString& EnteredName
 	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
 	
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
-	
+	LoadSlots[Slot]->SlotStatus = Taken;
 	GameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitializeSlot();
 }
@@ -46,4 +46,18 @@ void UMVVM_LoadMenu::NewGameButtonPressed(int32 Slot)
 void UMVVM_LoadMenu::SelectSlotButtonPressed(int32 Slot)
 {
 	
+}
+
+void UMVVM_LoadMenu::LoadData()
+{
+	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
+	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	{
+		ULoadMenuSaveGame* SaveObject = GameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
+		const FString PlayerName = SaveObject->PlayerName;
+		TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveObject->SaveSlotStatus;
+		LoadSlot.Value->SlotStatus = SaveSlotStatus;
+		LoadSlot.Value->SetPlayerName(PlayerName);
+		LoadSlot.Value->InitializeSlot();
+	}
 }
