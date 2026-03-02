@@ -75,6 +75,15 @@ void UMVVM_LoadMenu::DeleteButtonPressed()
 	}
 }
 
+void UMVVM_LoadMenu::PlayButtonPressed()
+{
+	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (IsValid(SelectedSlot))
+	{
+		GameMode->TravelToMap(SelectedSlot);
+	}
+}
+
 void UMVVM_LoadMenu::LoadData()
 {
 	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
