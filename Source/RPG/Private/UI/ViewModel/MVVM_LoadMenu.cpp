@@ -45,7 +45,17 @@ void UMVVM_LoadMenu::NewGameButtonPressed(int32 Slot)
 
 void UMVVM_LoadMenu::SelectSlotButtonPressed(int32 Slot)
 {
-	
+	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	{
+		if (LoadSlot.Key == Slot)
+		{
+			LoadSlot.Value->EnableSelectSlotButton.Broadcast(false);
+		}
+		else
+		{
+			LoadSlot.Value->EnableSelectSlotButton.Broadcast(true);
+		}
+	}
 }
 
 void UMVVM_LoadMenu::LoadData()
@@ -56,6 +66,7 @@ void UMVVM_LoadMenu::LoadData()
 		ULoadMenuSaveGame* SaveObject = GameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
 		const FString PlayerName = SaveObject->PlayerName;
 		TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveObject->SaveSlotStatus;
+		
 		LoadSlot.Value->SlotStatus = SaveSlotStatus;
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->InitializeSlot();
