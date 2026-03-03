@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
+#include "AbilitySystem/RPGAttributeSet.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
@@ -183,6 +184,18 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 		if (SaveData == nullptr) return;
 		
 		SaveData->PlayerStartTag = CheckpointTag;
+		
+		if (AMainPlayerState* MainPlayerState = Cast<AMainPlayerState>(GetPlayerState()))
+		{
+			SaveData->PlayerLevel = MainPlayerState->GetPlayerLevel();
+			SaveData->XP = MainPlayerState->GetXP();
+			SaveData->SpellPoints = MainPlayerState->GetSpellPoints();
+			SaveData->AttributePoints = MainPlayerState->GetAttributePoints();
+		}
+		SaveData->Strength = URPGAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
+		SaveData->Intelligence = URPGAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
+		SaveData->Resilience = URPGAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
+		SaveData->Vigor = URPGAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 		
 		GameMode->SaveInGameProgressData(SaveData);
 	}
