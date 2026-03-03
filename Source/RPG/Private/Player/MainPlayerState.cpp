@@ -41,7 +41,7 @@ void AMainPlayerState::AddToXP(int32 InXP)
 void AMainPlayerState::AddToLevel(int32 InLevel)
 {
 	Level += InLevel;
-	OnLevelChangedDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level, true);
 }
 
 void AMainPlayerState::AddToAttributePoints(int32 InPoints)
@@ -65,7 +65,7 @@ void AMainPlayerState::SetXP(int32 InXP)
 void AMainPlayerState::SetLevel(int32 InLevel)
 {
 	Level = InLevel;
-	OnLevelChangedDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level, false);
 }
 
 void AMainPlayerState::SetAttributePoints(int32 InPoints)
@@ -82,7 +82,7 @@ void AMainPlayerState::SetSpellPoints(int32 InPoints)
 
 void AMainPlayerState::OnRep_Level(int32 OldLevel)
 {
-	OnLevelChangedDelegate.Broadcast(Level);
+	OnLevelChangedDelegate.Broadcast(Level, true);
 }
 
 void AMainPlayerState::OnRep_XP(int32 OldXP)

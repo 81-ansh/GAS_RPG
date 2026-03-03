@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "RPGGameplayTags.h"
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
+#include "AbilitySystem/RPGAbilitySystemLibrary.h"
 #include "AbilitySystem/RPGAttributeSet.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
@@ -55,7 +56,6 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	//Init ability actor info for the server
 	InitAbilityActorInfo();
 	LoadProgress();
-	AddCharacterAbilities();
 }
 
 void APlayerCharacter::OnRep_PlayerState()
@@ -253,14 +253,6 @@ void APlayerCharacter::LoadProgress()
 		ULoadMenuSaveGame* SaveData = GameMode->RetrieveInGameSaveData();
 		if (SaveData == nullptr) return;
 		
-		if (AMainPlayerState* MainPlayerState = Cast<AMainPlayerState>(GetPlayerState()))
-		{
-			MainPlayerState->SetLevel(SaveData->PlayerLevel);
-			MainPlayerState->SetXP(SaveData->XP);
-			MainPlayerState->SetAttributePoints(SaveData->AttributePoints);
-			MainPlayerState->SetSpellPoints(SaveData->SpellPoints);
-		}
-		
 		if (SaveData->bFirstTimeLoadIn)
 		{
 			InitializeDefaultAttributes();
@@ -268,7 +260,14 @@ void APlayerCharacter::LoadProgress()
 		}
 		else
 		{
-			
+			if (AMainPlayerState* MainPlayerState = Cast<AMainPlayerState>(GetPlayerState()))
+			{
+				MainPlayerState->SetLevel(SaveData->PlayerLevel);
+				MainPlayerState->SetXP(SaveData->XP);
+				MainPlayerState->SetAttributePoints(SaveData->AttributePoints);
+				MainPlayerState->SetSpellPoints(SaveData->SpellPoints);
+			}
+			URPGAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 		}
 	}
 }
