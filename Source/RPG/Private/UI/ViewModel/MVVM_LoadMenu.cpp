@@ -24,6 +24,7 @@ void UMVVM_LoadMenu::InitializeLoadSlots()
 	LoadSlots.Add(2, LoadSlot_2);
 	LoadSlot_2->SlotIndex = 2;
 	
+	SetNumLoadSlots(LoadSlots.Num());
 }
 
 UMVVM_LoadSlot* UMVVM_LoadMenu::GetLoadSlotViewModelByIndex(int32 Index) const
@@ -98,4 +99,9 @@ void UMVVM_LoadMenu::LoadData()
 		LoadSlot.Value->InitializeSlot();
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
 	}
+}
+
+void UMVVM_LoadMenu::SetNumLoadSlots(int32 InNumLoadSlots)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(NumLoadSlots, InNumLoadSlots);
 }
