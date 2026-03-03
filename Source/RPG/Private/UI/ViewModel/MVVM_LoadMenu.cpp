@@ -89,6 +89,9 @@ void UMVVM_LoadMenu::PlayButtonPressed()
 	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
 	URPGGameInstance* GameInstance = Cast<URPGGameInstance>(GameMode->GetGameInstance());
 	GameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+	GameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
+	GameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
+	
 	if (IsValid(SelectedSlot))
 	{
 		GameMode->TravelToMap(SelectedSlot);

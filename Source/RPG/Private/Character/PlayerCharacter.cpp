@@ -10,8 +10,12 @@
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Character/CharacterBase.h"
+#include "Game/LoadMenuSaveGame.h"
+#include "Game/RPGGameInstance.h"
+#include "Game/RPGGameModeBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/MainPlayerController.h"
 #include "Player/MainPlayerState.h"
 #include "UI/HUD/RPGHUD.h"
@@ -167,6 +171,20 @@ void APlayerCharacter::HideMagicCircle_Implementation()
 	{
 		MainPlayerController->HideMagicCircle();
 		MainPlayerController->bShowMouseCursor = true;
+	}
+}
+
+void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
+{
+	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (GameMode)
+	{
+		ULoadMenuSaveGame* SaveData = GameMode->RetrieveInGameSaveData();
+		if (SaveData == nullptr) return;
+		
+		SaveData->PlayerStartTag = CheckpointTag;
+		
+		GameMode->SaveInGameProgressData(SaveData);
 	}
 }
 
