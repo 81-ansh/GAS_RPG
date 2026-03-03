@@ -54,6 +54,7 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 
 	//Init ability actor info for the server
 	InitAbilityActorInfo();
+	LoadProgress();
 	AddCharacterAbilities();
 }
 
@@ -197,6 +198,7 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 		SaveData->Resilience = URPGAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
 		SaveData->Vigor = URPGAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 		
+		SaveData->bFirstTimeLoadIn = false;
 		GameMode->SaveInGameProgressData(SaveData);
 	}
 }
@@ -243,6 +245,34 @@ void APlayerCharacter::OnRep_Burned()
 	}
 }
 
+void APlayerCharacter::LoadProgress()
+{
+	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (GameMode)
+	{
+		ULoadMenuSaveGame* SaveData = GameMode->RetrieveInGameSaveData();
+		if (SaveData == nullptr) return;
+		
+		if (AMainPlayerState* MainPlayerState = Cast<AMainPlayerState>(GetPlayerState()))
+		{
+			MainPlayerState->SetLevel(SaveData->PlayerLevel);
+			MainPlayerState->SetXP(SaveData->XP);
+			MainPlayerState->SetAttributePoints(SaveData->AttributePoints);
+			MainPlayerState->SetSpellPoints(SaveData->SpellPoints);
+		}
+		
+		if (SaveData->bFirstTimeLoadIn)
+		{
+			InitializeDefaultAttributes();
+			AddCharacterAbilities();
+		}
+		else
+		{
+			
+		}
+	}
+}
+
 void APlayerCharacter::InitAbilityActorInfo()
 {
 	AMainPlayerState* MainPlayerState = GetPlayerState<AMainPlayerState>();
@@ -262,5 +292,4 @@ void APlayerCharacter::InitAbilityActorInfo()
 			RPGHUD->InitOverlay(MainPlayerController, MainPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializeDefaultAttributes();
 }
