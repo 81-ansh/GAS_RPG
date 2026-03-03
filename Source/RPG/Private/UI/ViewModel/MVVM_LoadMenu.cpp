@@ -40,6 +40,8 @@ void UMVVM_LoadMenu::NewSlotButtonPressed(int32 Slot, const FString& EnteredName
 	LoadSlots[Slot]->SetMapName(GameMode->DefaultMapName);
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
 	LoadSlots[Slot]->SlotStatus = Taken;
+	LoadSlots[Slot]->PlayerStartTag = GameMode->DefaultPlayerStartTag;
+	
 	GameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitializeSlot();
 	
@@ -85,6 +87,8 @@ void UMVVM_LoadMenu::DeleteButtonPressed()
 void UMVVM_LoadMenu::PlayButtonPressed()
 {
 	ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this));
+	URPGGameInstance* GameInstance = Cast<URPGGameInstance>(GameMode->GetGameInstance());
+	GameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
 	if (IsValid(SelectedSlot))
 	{
 		GameMode->TravelToMap(SelectedSlot);
@@ -103,7 +107,9 @@ void UMVVM_LoadMenu::LoadData()
 		LoadSlot.Value->SlotStatus = SaveSlotStatus;
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->InitializeSlot();
+		
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
+		LoadSlot.Value->PlayerStartTag = SaveObject->PlayerStartTag;
 	}
 }
 

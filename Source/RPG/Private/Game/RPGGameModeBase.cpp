@@ -16,6 +16,7 @@ void ARPGGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	LoadMenuSaveGame->PlayerName = LoadSlot->GetPlayerName();
 	LoadMenuSaveGame->SaveSlotStatus = Taken;
 	LoadMenuSaveGame->MapName = LoadSlot->GetMapName();
+	LoadMenuSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 	
 	UGameplayStatics::SaveGameToSlot(LoadMenuSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }
