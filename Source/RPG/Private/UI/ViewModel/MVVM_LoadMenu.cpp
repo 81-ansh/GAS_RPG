@@ -3,6 +3,7 @@
 
 #include "UI/ViewModel/MVVM_LoadMenu.h"
 
+#include "Game/RPGGameInstance.h"
 #include "Game/RPGGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
@@ -41,6 +42,11 @@ void UMVVM_LoadMenu::NewSlotButtonPressed(int32 Slot, const FString& EnteredName
 	LoadSlots[Slot]->SlotStatus = Taken;
 	GameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitializeSlot();
+	
+	URPGGameInstance* GameInstance = Cast<URPGGameInstance>(GameMode->GetGameInstance());
+	GameInstance->LoadSlotName = LoadSlots[Slot]->GetLoadSlotName();
+	GameInstance->LoadSlotIndex = LoadSlots[Slot]->SlotIndex;
+	GameInstance->PlayerStartTag = GameMode->DefaultPlayerStartTag;
 }
 
 void UMVVM_LoadMenu::NewGameButtonPressed(int32 Slot)

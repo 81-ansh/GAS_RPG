@@ -4,6 +4,7 @@
 #include "Game/RPGGameModeBase.h"
 
 #include "Game/LoadMenuSaveGame.h"
+#include "Game/RPGGameInstance.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
@@ -52,6 +53,8 @@ void ARPGGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 
 AActor* ARPGGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 {
+	URPGGameInstance* GameInstance = Cast<URPGGameInstance>(GetGameInstance());
+	
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
 	if (Actors.Num() > 0)
@@ -61,7 +64,7 @@ AActor* ARPGGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 		{
 			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
 			{
-				if (PlayerStart->PlayerStartTag == FName("TheTag"))
+				if (PlayerStart->PlayerStartTag == GameInstance->PlayerStartTag)
 				{
 					SelectedActor = PlayerStart;
 					break;
