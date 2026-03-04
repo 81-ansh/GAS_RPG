@@ -14,7 +14,6 @@
 #include "Camera/CameraComponent.h"
 #include "Character/CharacterBase.h"
 #include "Game/LoadMenuSaveGame.h"
-#include "Game/RPGGameInstance.h"
 #include "Game/RPGGameModeBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -57,6 +56,11 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	//Init ability actor info for the server
 	InitAbilityActorInfo();
 	LoadProgress();
+	
+	if (ARPGGameModeBase* GameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		GameMode->LoadWorldState(GetWorld());
+	}
 }
 
 void APlayerCharacter::OnRep_PlayerState()
