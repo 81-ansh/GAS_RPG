@@ -8,6 +8,7 @@
 #include "AbilitySystem/RPGAbilitySystemComponent.h"
 #include "AbilitySystem/RPGAbilitySystemLibrary.h"
 #include "AbilitySystem/RPGAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
@@ -199,6 +200,28 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 		SaveData->Vigor = URPGAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
 		
 		SaveData->bFirstTimeLoadIn = false;
+		
+		if (!HasAuthority()) return;
+		
+		URPGAbilitySystemComponent* ASC = Cast<URPGAbilitySystemComponent>(AbilitySystemComponent);
+		FForEachAbility SaveAbilityDelegate;
+		SaveAbilityDelegate.BindLambda([this, ASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
+		{
+			const FGameplayTag AbilityTag = ASC->GetAbilityTagFromSpec(AbilitySpec);
+			UAbilityInfo* AbilityInfo = URPGAbilitySystemLibrary::GetAbilityInfo(this);
+			FRPGAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+			
+			FSavedAbility SavedAbility;
+			SavedAbility.GameplayAbility = Info.Ability;
+			SavedAbility.AbilityLevel = AbilitySpec.Level;
+			SavedAbility.AbilitySlot = ASC->GetSlotFromAbilityTag(AbilityTag);
+			SavedAbility.AbilityStatus = ASC->GetStatusFromAbilityTag(AbilityTag);
+			SavedAbility.AbilityType = Info.AbilityType;
+			SavedAbility.AbilityTag = AbilityTag;
+			
+			SaveData->SavedAbilities.Add(SavedAbility);
+		});
+		ASC->ForEachAbility(SaveAbilityDelegate);
 		GameMode->SaveInGameProgressData(SaveData);
 	}
 }
