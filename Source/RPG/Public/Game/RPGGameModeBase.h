@@ -34,6 +34,8 @@ public:
 	ULoadMenuSaveGame* RetrieveInGameSaveData();
 	void SaveInGameProgressData(ULoadMenuSaveGame* SaveObject);
 	
+	void SaveWorldState(UWorld* World);
+	
 	void TravelToMap(UMVVM_LoadSlot* Slot);
 	
 	UPROPERTY(EditDefaultsOnly)

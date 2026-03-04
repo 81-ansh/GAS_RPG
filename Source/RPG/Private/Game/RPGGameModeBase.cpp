@@ -2,11 +2,13 @@
 
 
 #include "Game/RPGGameModeBase.h"
-
+#include "EngineUtils.h"
 #include "Game/LoadMenuSaveGame.h"
 #include "Game/RPGGameInstance.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interaction/SaveInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 
 void ARPGGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
@@ -63,6 +65,54 @@ void ARPGGameModeBase::SaveInGameProgressData(ULoadMenuSaveGame* SaveObject)
 	GameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
 	
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
+void ARPGGameModeBase::SaveWorldState(UWorld* World)
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+	
+	URPGGameInstance* Instance = Cast<URPGGameInstance>(GetGameInstance());
+	check(Instance)
+	
+	if (ULoadMenuSaveGame* SaveGame = GetSaveSlotData(Instance->LoadSlotName, Instance->LoadSlotIndex))
+	{
+		if (!SaveGame->HasMap(WorldName))
+		{
+			FSavedMap NewSavedMap;
+			NewSavedMap.MapAssetName = WorldName;
+			SaveGame->SavedMaps.Add(NewSavedMap);
+		}
+		FSavedMap SavedMap = SaveGame->GetSavedMapWithMapName(WorldName);
+		SavedMap.SavedActors.Empty();	// Clear it out, we'll fill it in with "Actors"
+		
+		for (FActorIterator It(World); It; ++It)
+		{
+			AActor* Actor = *It;
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
+			
+			FSavedActor SavedActor;
+			SavedActor.ActorName = Actor->GetFName();
+			SavedActor.Transform = Actor->GetTransform();
+			
+			FMemoryWriter MemoryWriter(SavedActor.Bytes);
+			
+			FObjectAndNameAsStringProxyArchive Archive(MemoryWriter, true);
+			Archive.ArIsSaveGame = true;
+			
+			Actor->Serialize(Archive);
+			
+			SavedMap.SavedActors.AddUnique(SavedActor);
+		}
+		for (FSavedMap& MapToReplace : SaveGame->SavedMaps)
+		{
+			if (MapToReplace.MapAssetName == WorldName)
+			{
+				MapToReplace = SavedMap;
+			}
+		}
+		UGameplayStatics::SaveGameToSlot(SaveGame, Instance->LoadSlotName, Instance->LoadSlotIndex);
+	}
 }
 
 void ARPGGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
