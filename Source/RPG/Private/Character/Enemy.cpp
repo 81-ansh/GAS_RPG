@@ -32,6 +32,11 @@ AEnemy::AEnemy()
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
 	
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	GetMesh()->MarkRenderStateDirty();
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->MarkRenderStateDirty();
+	
 	BaseWalkSpeed = 250.f;
 }
 
@@ -50,10 +55,7 @@ void AEnemy::PossessedBy(AController* NewController)
 void AEnemy::HighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth(true);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-
 	Weapon->SetRenderCustomDepth(true);
-	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AEnemy::UnHighlightActor_Implementation()
@@ -61,6 +63,11 @@ void AEnemy::UnHighlightActor_Implementation()
 	GetMesh()->SetRenderCustomDepth(false);
 
 	Weapon->SetRenderCustomDepth(false);
+}
+
+void AEnemy::SetMoveToLocation_Implementation(FVector& OutDestination)
+{
+	// Do not change OutDestination
 }
 
 int32 AEnemy::GetPlayerLevel_Implementation()
