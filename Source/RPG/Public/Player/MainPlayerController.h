@@ -11,7 +11,7 @@ class UDamageTextComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
-class IEnemyInterface;
+class IHighlightInterface;
 class URPGInputConfig;
 class URPGAbilitySystemComponent;
 class USplineComponent;
@@ -61,8 +61,8 @@ private:
 	
 	void CursorTrace();
 	FHitResult CursorHit;
-	IEnemyInterface* LastActor;
-	IEnemyInterface* ThisActor;
+	IHighlightInterface* LastActor;
+	IHighlightInterface* ThisActor;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);

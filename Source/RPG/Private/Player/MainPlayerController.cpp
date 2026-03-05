@@ -15,6 +15,7 @@
 #include "Input/RPGInputComponent.h"
 #include "GameFramework/Character.h"
 #include "Interaction/EnemyInterface.h"
+#include "Interaction/HighlightInterface.h"
 #include "RPG/RPG.h"
 #include "UI/Widget/DamageTextComponent.h"
 
@@ -155,7 +156,7 @@ void AMainPlayerController::CursorTrace()
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
-	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+	ThisActor = Cast<IHighlightInterface>(CursorHit.GetActor());
 
 	if (LastActor != ThisActor)
 	{

@@ -7,6 +7,7 @@
 #include "Character/CharacterBase.h"
 #include "Interaction/EnemyInterface.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Interaction/HighlightInterface.h"
 #include "Enemy.generated.h"
 
 class UWidgetComponent;
@@ -17,7 +18,7 @@ class ARPGAIController;
  * 
  */
 UCLASS()
-class RPG_API AEnemy : public ACharacterBase, public IEnemyInterface
+class RPG_API AEnemy : public ACharacterBase, public IEnemyInterface, public IHighlightInterface
 {
 	GENERATED_BODY()
 	
@@ -26,10 +27,10 @@ public:
 	AEnemy();
 	virtual void PossessedBy(AController* NewController) override;
 	
-	/* Enemy Interface */
+	/* Highlight Interface */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
-	/* end Enemy Interface */
+	/* end Highlight Interface */
 
 	/* Combat Interface*/
 	virtual int32 GetPlayerLevel_Implementation() override;
