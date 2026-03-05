@@ -27,8 +27,11 @@ public:
 	virtual void LoadActor_Implementation() override;
 	/* End SaveInterface */
 	
-	UPROPERTY(BlueprintReadOnly, SaveGame)
+	UPROPERTY(BlueprintReadWrite, SaveGame)
 	bool bReached = false;
+	
+	UPROPERTY(EditAnywhere)
+	bool bBindOverlapCallback = true;
 	
 protected:
 	
@@ -52,12 +55,11 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartGlowTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
 	
+	UFUNCTION(BlueprintCallable)
 	void Glow();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> CheckpointMesh;
-	
-private:
 		
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> Sphere;
