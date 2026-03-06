@@ -31,11 +31,45 @@ class RPG_API AEffectActor : public AActor
 	GENERATED_BODY()
 	
 public:	
+	
 	AEffectActor();
+	
+	virtual void Tick(float DeltaTime) override;
 
 protected:
+	
 	virtual void BeginPlay() override;
+	
+	UPROPERTY(BlueprintReadOnly)
+	FVector CalculatedLocation;
+	
+	UPROPERTY(BlueprintReadOnly)
+	FRotator CalculatedRotation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movements")
+	bool bRotates = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movements")
+	float RotationRate = 45.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movements")
+	bool bSinusoidalMovement = false;
+	
+	UFUNCTION(BlueprintCallable)
+	void StartSinusoidalMovement();
+
+	UFUNCTION(BlueprintCallable)
+	void StartRotation();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movements")
+	float SineAmplitude = 1.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movements")
+	float SinePeriodConstant = 1.f;	// 2 * Pi
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup Movements")
+	FVector InitialLocation;
+	
 	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
@@ -76,4 +110,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Applied Effects")
 	float ActorLevel = 1.f;
+	
+private:
+	
+	float RunningTime = 0.f;
+	void ItemMovement(float DeltaTime);
 };
