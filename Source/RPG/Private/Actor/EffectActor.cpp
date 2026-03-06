@@ -15,13 +15,17 @@ AEffectActor::AEffectActor()
 void AEffectActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	RunningTime += DeltaTime;
-	const float SinePeriod = 2 * PI / SinePeriodConstant;
-	if (RunningTime > SinePeriodConstant)
+	
+	if (bSinusoidalMovement)
 	{
-		RunningTime = 0.f;
+		RunningTime += DeltaTime;
+        const float SinePeriod = 2 * PI / SinePeriodConstant;
+        if (RunningTime > SinePeriodConstant)
+        {
+        	RunningTime = 0.f;
+        }
+        ItemMovement(DeltaTime);
 	}
-	ItemMovement(DeltaTime);
 }
 
 void AEffectActor::BeginPlay()
@@ -34,6 +38,7 @@ void AEffectActor::BeginPlay()
 
 void AEffectActor::StartSinusoidalMovement()
 {
+	RunningTime = 0.f;
 	bSinusoidalMovement = true;
 	InitialLocation = GetActorLocation();
 	CalculatedLocation = InitialLocation;
