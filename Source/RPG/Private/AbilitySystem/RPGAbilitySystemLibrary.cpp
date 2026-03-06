@@ -210,6 +210,13 @@ UAbilityInfo* URPGAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldConte
 	return RPGGameMode->AbilityInfo;
 }
 
+ULootTiers* URPGAbilitySystemLibrary::GetLootTiers(const UObject* WorldContextObject)
+{
+	const ARPGGameModeBase* RPGGameMode = Cast<ARPGGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (RPGGameMode == nullptr) return nullptr;
+	return RPGGameMode->LootTiers;
+}
+
 bool URPGAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FRPGGameplayEffectContext* RPGEffectContext = static_cast<const FRPGGameplayEffectContext*>(EffectContextHandle.Get()))

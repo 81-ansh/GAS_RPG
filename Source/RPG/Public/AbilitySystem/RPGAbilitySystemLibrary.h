@@ -8,6 +8,7 @@
 #include "Data/CharacterClassInfo.h"
 #include "RPGAbilitySystemLibrary.generated.h"
 
+class ULootTiers;
 class ULoadMenuSaveGame;
 class UAbilityInfo;
 class USpellMenuWidgetController;
@@ -58,6 +59,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "RPGAbilitySystemLibrary|CharacterClassDefaults")
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintCallable, Category = "RPGAbilitySystemLibrary|CharacterClassDefaults", meta = (DefaultToSelf = "WorldContextObject"))
+	static ULootTiers* GetLootTiers(const UObject* WorldContextObject);
 	
 	/*
 	 * Effect Context Getters
