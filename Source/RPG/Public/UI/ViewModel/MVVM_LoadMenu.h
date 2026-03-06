@@ -66,7 +66,7 @@ private:
 	UPROPERTY()
 	TObjectPtr<UMVVM_LoadSlot> LoadSlot_2;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMVVM_LoadSlot> SelectedSlot;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
